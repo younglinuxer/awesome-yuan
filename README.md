@@ -22,7 +22,7 @@
 - [rocketmq](./rocketmq/rocketmq.md)
 
 #### 存储类
-- [mindoc](./mindoc/mindoc.md)
+- [minio](./minio/minio.md)
 - [fastdfs](./fastdfs/fastdfs.md)
 - [ambry](./ambry/ambry.md)
 ##### 监控

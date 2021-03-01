@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  mongo:
+    image: mongo:4.0
+    ports:
+      - 27017:27017
+    restart: always
+    tty: true
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: Admin
+      MONGO_INITDB_ROOT_PASSWORD: Admin123Abc123
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./db/db_a/data:/data/db
+      - ./db/db_a/log:/data/log
+    command:
+      - /bin/bash
+      - -c
+      - mongod --port 27017 --bind_ip_all --auth --dbpath "/data/db"   --logpath "/data/log/db.log" --replSet mongoreplset

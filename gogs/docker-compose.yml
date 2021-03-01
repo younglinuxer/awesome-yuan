@@ -1,0 +1,32 @@
+version: '3'
+services:
+  gogs-db:
+    container_name: gogs-db
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "53306:3306"
+    environment:
+     MYSQL_ROOT_PASSWORD: somewordpress
+     MYSQL_DATABASE: wordpress
+     MYSQL_USER: wordpress
+     MYSQL_PASSWORD: wordpress
+    command: --init-file /data/application/init.sql
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
+      - "./mysql-config:/etc/mysql/conf.d"
+      - "./init.sql:/data/application/init.sql"
+
+  gogs-web:
+    container_name: gogs
+    image: gogs/gogs
+    restart: always
+    depends_on:
+      - gogs-db
+    links:
+      - gogs-db:gogs-db
+    ports:
+      - "10022:22"
+      - "10080:3000"
+    volumes:
+      - "./gogs-data:/data"

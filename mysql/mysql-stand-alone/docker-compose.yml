@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mysql-db:
+    container_name: mysql-kw-test        # 指定容器的名称
+    image: mysql:5.7                   # 指定镜像和版本
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+#      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+    volumes:
+      - "./data:/var/lib/mysql"           # 挂载数据目录
+      - "./config:/etc/mysql/conf.d"      # 挂载配置文件目录

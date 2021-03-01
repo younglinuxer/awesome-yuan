@@ -1,0 +1,16 @@
+version: '3'
+services:
+  redis:
+    image: redis:5.0.8
+    container_name: k8s-test-redis
+    network_mode: "host"
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./conf/redis.conf:/etc/redis/redis.conf
+      - ./data:/data
+    command:
+      redis-server  /etc/redis/redis.conf
