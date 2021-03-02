@@ -1,0 +1,39 @@
+groups:
+- name: redis_monitor
+  rules:
+# redis宕机.
+  - alert: RedisDown
+    expr: redis_up == 0
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Redis 宕机 (instance {{ $labels.instance }})"
+      description: "Redis instance is down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Redis集群震荡
+  - alert: RedisClusterFlapping
+    expr: changes(redis_connected_slaves[1m]) > 1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Redis 集群波动 (instance {{ $labels.instance }})"
+      description: "Changes have been detected in Redis replica connection. This can occur when replica nodes lose connection to the master and reconnect (a.k.a flapping).\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#	Redis实例连接过多
+  - alert: RedisTooManyConnections
+    expr: redis_connected_clients > 100
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Redis 连接数 > 100 (instance {{ $labels.instance }})"
+      description: "Redis instance has too many connections\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#与Redis的某些连接已被拒绝
+  - alert: RedisRejectedConnections
+    expr: increase(redis_rejected_connections_total[1m]) > 0
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Redis 部分连接被拒绝 (instance {{ $labels.instance }})"
+      description: "Some connections to Redis has been rejected\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"

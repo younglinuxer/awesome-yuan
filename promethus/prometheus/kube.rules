@@ -1,0 +1,59 @@
+groups:
+- name: Kubernetes_monitor
+  rules:
+# Kubernetes节点就绪
+  - alert: KubernetesNodeReady
+    expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kubernetes Node ready (instance {{ $labels.instance }})"
+      description: "Node {{ $labels.node }} has been unready for a long time\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Kubernetes的内存压力
+  - alert: KubernetesMemoryPressure
+    expr: kube_node_status_condition{condition="MemoryPressure",status="true"} == 1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kubernetes memory pressure (instance {{ $labels.instance }})"
+      description: "{{ $labels.node }} has MemoryPressure condition\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Kubernetes磁盘压力
+  - alert: KubernetesDiskPressure
+    expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kubernetes 磁盘压力 (instance {{ $labels.instance }})"
+      description: "{{ $labels.node }} has DiskPressure condition\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Pod处于未就绪状态已超过一个小时。
+#Kubernetes 无限重启
+  - alert: KubernetesPodCrashLooping
+    expr: increase(kube_pod_container_status_restarts_total[1m]) > 3
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Kubernetes pod crash looping (instance {{ $labels.instance }})"
+      description: "Pod {{ $labels.pod }} is crash looping\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Kubernetes集群缓慢
+
+  - alert: KubernetesJobSlowCompletion
+    expr: kube_job_spec_completions - kube_job_status_succeeded > 0
+    for: 12h
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kubernetes 运行缓慢 (instance {{ $labels.instance }})"
+      description: "Kubernetes Job {{ $labels.namespace }}/{{ $labels.job_name }} did not complete in time.\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+#Kubernetes API服务器出现高错误率
+  - alert: KubernetesApiServerErrors
+    expr: sum(rate(apiserver_request_count{job="apiserver",code=~"^(?:5..)$"}[1m])) / sum(rate(apiserver_request_count{job="apiserver"}[1m])) * 100 > 3
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kubernetes API 错误过多请排查 (instance {{ $labels.instance }})"
+      description: "Kubernetes API server is experiencing high error rate\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
