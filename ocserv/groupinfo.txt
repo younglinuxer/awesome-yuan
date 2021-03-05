@@ -1,0 +1,2 @@
+default-select-group = Route[仅代理设置的子网]
+config-per-group = /etc/ocserv/config-per-group

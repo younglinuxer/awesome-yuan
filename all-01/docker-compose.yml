@@ -1,0 +1,65 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+     MYSQL_ROOT_PASSWORD: younglinuxer
+    command: --init-file /data/application/init.sql
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
+      - "./mysql-config:/etc/mysql/conf.d"
+      - "./gogs/init.sql:/data/application/init.sql"
+
+  redis:
+    image: redis:5.0.8
+    container_name: redis
+    #network_mode: "host"
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-conf/redis.conf:/etc/redis/redis.conf
+      - ./redis-data:/data
+    command:
+      redis-server  /etc/redis/redis.conf
+
+  zentao:
+    image: idoop/zentao:latest
+    container_name: zentao
+    # if web response code: 310 ERR_TOO_MANY_REDIRECTS, please use host mode.
+#    network_mode: "host"
+    ports:
+      - "85:80"
+      - "3308:3306"
+    # mysql root account default password is '123456'.
+    # the zentao adminstrator account is 'admin',and init password is '123456'.
+    environment:
+    # specifies Adminer account and password for web login database.
+      USER: "root"
+      PASSWD: "123456"
+      BIND_ADDRESS: "false"
+    extra_hosts:
+      - "smtp.exmail.qq.com:163.177.90.125"
+    volumes:
+      - ./zentao-data:/opt/zbox/
+    restart: always
+
+  gogs-web:
+    container_name: gogs
+    image: gogs/gogs
+    restart: always
+    depends_on:
+      - mysql
+    links:
+      - mysql:mysql
+    ports:
+      - "10022:22"
+      - "10080:3000"
+    volumes:
+      - "./gogs-data:/data"

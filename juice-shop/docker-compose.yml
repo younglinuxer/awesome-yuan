@@ -1,0 +1,9 @@
+version: '3'
+services:
+  redis:
+    image: bkimminich/juice-shop
+    container_name: juice-shop-younglinuxer
+    hostname: juice-shop-younglinuxer
+    restart: always
+    ports:
+      - 53000:3000

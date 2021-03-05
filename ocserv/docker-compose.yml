@@ -1,0 +1,16 @@
+version: '3.0'
+services:
+  ocserv:
+    image: younglinuxer/ocserv
+    restart: always
+    container_name: ocserv
+    privileged: true
+    hostname: harbor.youngblog.cc
+    ports:
+      - 443:443/udp
+      - 443:443
+    volumes:
+      - "./ocserv:/etc/ocserv"
+    environment:
+      - DOMAIN="harbor.youngblog.cc"
+      - EN_NETWORK="172.17.54.0"
