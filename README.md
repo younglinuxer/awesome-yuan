@@ -9,8 +9,8 @@
 
 <table border="0">
     <tr>
-        <td><a href="docs/setup/00-planning_and_overall_intro.md">开发环境安装(mysql,redis,禅道,gogs)</a></td>
-        <td><a href="docs/setup/02-install_etcd.md">01-开箱即用的promethus监控系统</a></td>
+        <td><a href="all-01/all-01.md">开发环境安装(mysql,redis,禅道,gogs)</a></td>
+        <td><a href="promethus/promethus.md">01-开箱即用的promethus监控系统</a></td>
         <td><a href="docs/setup/04-install_kube_master.md">02-数据库集群测试</a></td>
     </tr>
 </table>
@@ -32,7 +32,7 @@
 
 #### 队列
 - [rabbitmq](./rabbitmq/rabbitmq.md)
-- [kafka](./kafka/kafka.md)
+- [kafka](kafka-md/kafka.md)
 - [rocketmq](./rocketmq/rocketmq.md)
 
 #### 存储类

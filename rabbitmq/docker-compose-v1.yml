@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  rabbitmq:
+    image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+    environment:
+      - RABBITMQ_USERNAME=rabbitmq
+      - RABBITMQ_PASSWORD=rabbitmq
+      - RABBITMQ_VHOST=/younglinuxer
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - 'rabbitmq_data:/bitnami'
+volumes:
+  rabbitmq_data:
+    driver: local

@@ -1,0 +1,23 @@
+version: "2.3"
+services:
+  nginx:
+    image: nginx
+    privileged: true
+    ports: 
+      - "80:80"
+    volumes: 
+      - ./www/web:/usr/share/nginx/html
+      - ./www/conf:/etc/nginx/conf.d
+      - ./www/logs:/var/log/nginx
+    networks:
+      - web-net
+  php:
+    image: phpdockerio/php72-fpm
+    privileged: true
+    volumes:
+      - ./www/web:/web
+    networks:
+      - web-net
+networks: 
+  web-net:
+
