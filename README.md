@@ -11,7 +11,7 @@
     <tr>
         <td><a href="all-01/all-01.md">开发环境安装(mysql,redis,禅道,gogs)</a></td>
         <td><a href="promethus/promethus.md">01-开箱即用的promethus监控系统</a></td>
-        <td><a href="docs/setup/04-install_kube_master.md">02-数据库集群测试</a></td>
+        <td><a href="mysql/mysql.md">02-数据库集群测试</a></td>
     </tr>
 </table>
 
@@ -21,23 +21,25 @@
 - [mindoc](./mindoc/mindoc.md) 小巧易用的文档库
 - [sonar](./sonar/sonar.md) 代码质量检测工具
 - [zentao](./zentao/zentao.md) 禅道 项目管理工具
+- [php](./php-nginx/php.md) 快速部署php环境 
 - [svn](./svn/svn.md)
 - [elk](./elk/elk.md)
 #### 数据库
 - [mysql](./mysql/mysql.md) 包含单机 一主一从
 - [redis](./redis/redis.md) 包含单机 哨兵 及redis集群
 - [mongo](./mongo/mongo.md) 包含单机 副本集 分片集群
-- [psql](./psql/psql.md)
+- [psql](./psql/psql.md) 10版本以上镜像 老版本Navicat Premium可能不支持
 - [hive](./hive/hive.md)
 
 #### 队列
-- [rabbitmq](./rabbitmq/rabbitmq.md)
+- [rabbitmq](./rabbitmq/rabbitmq.md) 新增python调用测试示例
 - [kafka](kafka-md/kafka.md)
-- [rocketmq](./rocketmq/rocketmq.md)
+- [rocketmq](./rocketmq/rocketmq.md) 
 
 #### 存储类
 - [minio](./minio/minio.md) 好用现代化对象存储
 - [fastdfs](./fastdfs/fastdfs.md) 老牌存储 
+- [samba](./samba/samba.md) windows 共享协议 
 ##### 监控
 - [zabbix](./zabbix/zabbix.md)
 - [promethus](./promethus/promethus.md) 只需要修改下配置文件即可使用promethus监控系统
