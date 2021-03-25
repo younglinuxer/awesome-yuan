@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: P1b7JBvP8II4
+      MYSQL_DATABASE: sonarqube
+      MYSQL_USER: sonarqube
+      MYSQL_PASSWORD: P1b7JBvP8II4
+
+  sonarqube:
+    depends_on:
+      - db
+    image: sonarqube:7.4-community
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonarqube
+      SONARQUBE_JDBC_PASSWORD: P1b7JBvP8II4
+      SONARQUBE_JDBC_URL: jdbc:mysql://db:3306/sonarqube?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+volumes:
+  db_data:
