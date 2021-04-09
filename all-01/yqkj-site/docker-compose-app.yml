@@ -1,0 +1,106 @@
+version: '3'
+services:
+  gateway:
+    container_name: sit-gateway
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-gateway:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/gateway/:/log/gateway
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  auth:
+    container_name: sit-auth
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-auth:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/auth/:/log/auth
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+
+  file-biz:
+    container_name: sit-file-biz
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-file-biz:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/file-biz/:/log/file-biz
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  xxl-job:
+    container_name: sit-xxl-job
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-xxl-job-admin:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/xxl-job/:/log/xxl-job
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  log-biz:
+    container_name: sit-log-biz
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-log-biz:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/log-biz/:/log/log-biz
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  factoring-mgr:
+    container_name: sit-factoring-mgr
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-factoring-mgr:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/factoring-mgr/:/log/factoring-mgr
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  docx4j2pdf-plug-web:
+    container_name: sit-docx4j2pdf-plug-web
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-docx4j2pdf-plug-web:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/docx4j2pdf-plug-web/:/log/docx4j2pdf-plug-web
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+
+  anxinsign-plug-web:
+    container_name: sit-anxinsign-plug-web
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-anxinsign-plug-web:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./env/hosts:/etc/hosts
+      - ./log/anxinsign-plug-web/:/log/anxinsign-plug-web
+    deploy:
+      resources:
+        limits:
+          memory: 500M

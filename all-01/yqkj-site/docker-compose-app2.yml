@@ -1,0 +1,21 @@
+version: '3'
+services:
+  gateway:
+    container_name: sit-gateway
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-gateway:latest
+    restart: always
+    networks:
+      - custom_net
+
+
+  upms-mgr:
+    container_name: sit-upms-mgr
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-upms-mgr:latest
+    restart: always
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+    external:
+      name: app_net

@@ -8,7 +8,7 @@
 ```
 
 验证mysql配置文件是否更改
-![Image text](../src/img/all-01-mysql.png) 
+
 
 需要配置密码才能连接redis
 ![Image text](../src/img/all-01-redis.png)

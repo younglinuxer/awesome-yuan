@@ -1,0 +1,137 @@
+version: '3'
+services:
+  upms-mgr:
+    container_name: sit-upms-mgr
+    image: registry.cn-shenzhen.aliyuncs.com/jck/sit-upms-mgr:latest
+    restart: always
+    depends_on:
+      - cloud-nacos
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    networks:
+      - custom_net
+
+  cloud-nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos-standalone-mysql
+    env_file:
+      - ./env/nacos.env
+    volumes:
+      - ./nacos-logs/:/home/nacos/logs
+      - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+      - "9555:9555"
+    depends_on:
+      - mysql
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    restart: on-failure
+    networks:
+      - custom_net
+
+  mysql:
+    container_name: mysql
+    image: nacos/nacos-mysql:5.7
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    networks:
+      - custom_net
+
+  redis:
+    image: redis:5.0.8
+    container_name: redis
+    #network_mode: "host"
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6389:6379
+    volumes:
+      - ./redis-config/redis.conf:/etc/redis/redis.conf
+      - ./redis-data:/data
+    command:
+      redis-server  /etc/redis/redis.conf
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+    networks:
+      - custom_net
+
+  mongo:
+    image: mongo:4.0
+    ports:
+      - 27017:27017
+    restart: always
+    networks:
+      - custom_net
+    tty: true
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: Admin
+      MONGO_INITDB_ROOT_PASSWORD: Admin123Abc123
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./mongo/data:/data/db
+      - ./mongo/log:/data/log
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    command:
+      - /bin/bash
+      - -c
+      - mongod --port 27017 --bind_ip_all --auth --dbpath "/data/db"   --logpath "/data/log/db.log" --replSet mongoreplset
+
+  rabbitmq:
+    image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+    environment:
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=admin
+      - RABBITMQ_VHOST=/zebra-dev
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - custom_net
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+     MINIO_ROOT_USER: AKIAIOSFODNN7EXAMPLE
+     MINIO_ROOT_PASSWORD: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    command: server /data
+    volumes:
+      - "./minio-data:/data"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    networks:
+      - custom_net
+
+
+networks:
+  custom_net:
+    external:
+      name: app_net
