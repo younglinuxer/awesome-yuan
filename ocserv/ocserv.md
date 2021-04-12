@@ -4,6 +4,11 @@
 https://hub.docker.com/r/tommylau/ocserv
 https://github.com/wppurking/ocserv-docker
 ```
+```
+默认用户名密码： test  test
+vpn网络地址 172.22.0.0/24
+```
+
 
 基于该项目的docker进行修改
 ```
@@ -17,14 +22,12 @@ https://github.com/wppurking/ocserv-docker
 
 更改后的镜像: docker pull younglinuxer/young-ocserv:latest
 
-
 docker  run --rm  --name ocserv --privileged  -p 1443:443 -v `pwd`/server-cert.pem:/etc/ocserv/certs/server-cert.pem -v `pwd`/server-key.pem:/etc/ocserv/certs/server-key.pem  -e DOMAIN="harbor.youngblog.cc" -e EN_NETWORK="172.17.54.0"  younglinuxer/young-ocserv
 
 新增环境变量解释:
 ```
 DOMAIN:连接vpn的证书
 EN_NETWORK: 设置当前路由 一般为当前主机的子网
-
 ```
 
 问题记录

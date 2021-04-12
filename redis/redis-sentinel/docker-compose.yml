@@ -1,1 +1,83 @@
-1
+version: '3'
+services:
+  redis-master:
+    image: redis:5.0.8
+    container_name: redis-master
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./conf/master.conf:/etc/redis/redis.conf
+      - ./data:/data
+    command:
+      redis-server  /etc/redis/redis.conf
+
+  redis-slave01:
+    image: redis:5.0.8
+    container_name: redis-slave01
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6380:6379
+    volumes:
+      - ./conf/slave.conf:/etc/redis/redis.conf
+    command:
+      redis-server  /etc/redis/redis.conf
+
+  redis-slave02:
+    image: redis:5.0.8
+    container_name: redis-slave02
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 6381:6379
+    volumes:
+      - ./conf/slave.conf:/etc/redis/redis.conf
+    command:
+      redis-server  /etc/redis/redis.conf
+
+  redis-sentinel01:
+    image: redis:5.0.8
+    container_name: redis-sentinel01
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 26379:26379
+    volumes:
+      - ./conf/sentinel-6379.conf:/etc/redis/sentinel.conf
+      - ./conf/sentinel-alert.sh:/etc/redis/sentinel-alert.sh
+    command:
+      redis-sentinel  /etc/redis/sentinel.conf
+
+  redis-sentinel02:
+    image: redis:5.0.8
+    container_name: redis-sentinel02
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 26380:26380
+    volumes:
+      - ./conf/sentinel-6380.conf:/etc/redis/sentinel.conf
+      - ./conf/sentinel-alert.sh:/etc/redis/sentinel-alert.sh
+    command:
+      redis-sentinel  /etc/redis/sentinel.conf
+
+  redis-sentinel03:
+    image: redis:5.0.8
+    container_name: redis-sentinel03
+    privileged: true
+    hostname: redis
+    restart: always
+    ports:
+      - 26381:26381
+    volumes:
+      - ./conf/sentinel-6381.conf:/etc/redis/sentinel.conf
+      - ./conf/sentinel-alert.sh:/etc/redis/sentinel-alert.sh
+    command:
+      redis-sentinel  /etc/redis/sentinel.conf

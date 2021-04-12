@@ -1,77 +1,105 @@
 version: '3'
 services:
-  redis-node01:
+  redis-master01:
     image: redis:5.0.8
-    container_name: redis-node01
+    container_name: redis-master01
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6379:6379
     volumes:
       - ./conf/node01.conf:/etc/redis/redis.conf
-      - ./data01:/data
+      - ./data:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.10
 
-  redis-node02:
+  redis-master02:
     image: redis:5.0.8
-    container_name: redis-node02
+    container_name: redis-master02
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6380:6379
     volumes:
       - ./conf/node02.conf:/etc/redis/redis.conf
-      - ./data02:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.11
 
-
-  redis-node03:
+  redis-master03:
     image: redis:5.0.8
-    container_name: redis-node03
+    container_name: redis-master03
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6381:6379
     volumes:
       - ./conf/node03.conf:/etc/redis/redis.conf
-      - ./data03:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.12
 
-  redis-node04:
+  redis-slave01:
     image: redis:5.0.8
-    container_name: redis-node04
+    container_name: redis-slave01
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6382:6379
     volumes:
       - ./conf/node04.conf:/etc/redis/redis.conf
-      - ./data04:/data
+      - ./data:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.13
 
-  redis-node05:
+  redis-slave02:
     image: redis:5.0.8
-    container_name: redis-node05
+    container_name: redis-slave02
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6383:6379
     volumes:
       - ./conf/node05.conf:/etc/redis/redis.conf
-      - ./data05:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.14
 
-
-  redis-node06:
+  redis-slave03:
     image: redis:5.0.8
-    container_name: redis-node06
+    container_name: redis-slave03
     privileged: true
+    hostname: redis
     restart: always
-    network_mode: "host"
+    ports:
+      - 6384:6379
     volumes:
       - ./conf/node06.conf:/etc/redis/redis.conf
-      - ./data06:/data
     command:
       redis-server  /etc/redis/redis.conf
+    networks:
+      proxy:
+        ipv4_address: 172.16.8.15
 
-
+networks:
+  proxy:
+    ipam:
+      config:
+      - subnet: 172.16.8.0/24
