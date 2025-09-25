@@ -1,0 +1,55 @@
+input {
+  beats {
+    port => 5045
+    #设置编码
+    codec => json {charset => "UTF-8"}
+     #当存在多个文件的时候可使用type指定输入输出路径
+    }
+}
+
+#2.过滤格式化数据阶段
+filter {
+ mutate{
+        remove_field => ["logtype"]
+        remove_field => ["thread"]
+        remove_field => ["level"]
+        remove_field => ["host"]
+        remove_field => ["agent"]
+        remove_field => ["ecs"]
+        remove_field => ["tags"]
+        remove_field => ["fields"]
+        remove_field => ["@version"]
+        remove_field => ["@timestamp"]
+        remove_field => ["input"]
+        remove_field => ["log"]
+        remove_field => ["type"]
+    }
+json{ 
+      #skip_on_invalid_json => true
+      source => "message"
+      remove_field => ["message"]
+    }
+    date {
+           match => [ "time", "yyyy-MM-dd HH:mm:ss" ]
+       }
+
+}
+#3.数据输出到ES阶段
+output {
+
+    #日志输出格式，json_lines;rubydebug等
+    stdout {
+        codec => rubydebug
+    }
+	if "_jsonparsefailure" not in [tags] {
+	  elasticsearch {
+		 
+		  hosts => ["172.16.12.79:9200","172.16.12.80:9200","172.16.12.81:9200"]
+		  #hosts => ["172.16.12.22:9200"]
+		  #索引
+		  index => "young_test_index3"
+		  #类型
+
+	  }
+	}
+}

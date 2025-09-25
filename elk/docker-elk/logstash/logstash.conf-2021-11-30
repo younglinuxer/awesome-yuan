@@ -1,0 +1,99 @@
+#读取json文件
+input {
+  beats {
+    port => 5044
+    #设置编码
+    codec => json {charset => "UTF-8"}
+
+    #当存在多个文件的时候可使用type指定输入输出路径
+    type => "useraction"
+  }
+  beats {
+    port => 5045
+    #设置编码
+    codec => json {charset => "UTF-8"}
+
+     #当存在多个文件的时候可使用type指定输入输出路径
+    type => "serviceaccess"
+    }
+}
+
+#2.过滤格式化数据阶段
+filter {
+    if[type] == "useraction"{
+      json{
+            source => "message"
+            #target => "doc"
+            #删除无效的字段
+            remove_field => ["@version","logtype","thread","level","message"]
+          }
+      date {
+             match => [ "optTime", "yyyy-MM-dd HH:mm:ss" ]
+         }
+     }
+    if[type] == "serviceaccess"{
+        json{
+              source => "message"
+             # target => "doc"
+              #删除无效的字段
+              remove_field => ["@version","logtype","thread","level","message"]
+            }
+        date {
+               match => [ "time", "yyyy-MM-dd HH:mm:ss" ]
+           }
+       }
+}
+
+#3.数据输出到ES阶段
+output {
+
+    #日志输出格式，json_lines;rubydebug等
+    stdout {
+        codec => rubydebug
+    }
+
+            #输出到es
+    if[type] == "useraction"{
+
+        #无法解析的json不记录到elasticsearch中
+        if "_jsonparsefailure" not in [tags] {
+            elasticsearch {
+                #es地址ip端口
+                hosts => ["172.16.12.79:9200","172.16.12.80:9200","172.16.12.81:9200"]
+                #索引
+                index => "young_test_index3"
+                #类型
+                #document_type => "useraction"
+
+                #覆盖模板，不需要可注释掉，通用模板下载：https://download.csdn.net/download/alan_liuyue/11241484
+                #template_overwrite=>true
+                #template=>"/data/es/logstash-5.6.1/template/logstash.json"
+                #template_overwrite=>true
+                #template=>"/data/logstash-7.1.0/config/template/useraction.json"
+               # template_name=>useraction
+            }
+        }
+     }
+
+   if[type] == "serviceaccess"{
+
+          #无法解析的json不记录到elasticsearch中
+          if "_jsonparsefailure" not in [tags] {
+              elasticsearch {
+                  #es地址ip端口
+                  hosts => ["172.16.12.79:9200","172.16.12.80:9200","172.16.12.81:9200"]
+                  #索引
+                  index => "young_test_index3"
+                  #类型
+                  #document_type => "serviceaccess"
+
+                  #覆盖模板，不需要可注释掉，通用模板下载：https://download.csdn.net/download/alan_liuyue/11241484
+                  #template_overwrite=>true
+                  #template=>"/data/logstash-7.1.0/config/template/serviceaccess.json"
+                 # template_name=>serviceaccess
+
+              }
+          }
+      }
+}
+
