@@ -1,0 +1,18 @@
+version: '3'
+services:
+  emqx:
+    image: emqx:5.0.26
+    environment:
+    - EMQX_NAME=emqx01
+    - EMQX_HOST=10.100.17.34
+    - EMQX_CLUSTER__NAME=ztc_emq_8
+    - EMQX_CLUSTER__DISCOVERY_STRATEGY=static
+    - TZ=Asia/Shanghai
+    - LANG=en_US.UTF-8
+
+    network_mode: "host"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+
