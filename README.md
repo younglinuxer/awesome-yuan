@@ -10,7 +10,7 @@
 <table border="0">
     <tr>
         <td><a href="all-01/all-01.md">开发环境安装(mysql,redis,禅道,gogs)</a></td>
-        <td><a href="promethus/promethus.md">01-开箱即用的promethus监控系统</a></td>
+        <td><a href="prometheus/prometheus.md">01-开箱即用的prometheus监控系统</a></td>
         <td><a href="mysql/mysql.md">02-数据库集群测试</a></td>
     </tr>
 </table>
@@ -22,14 +22,12 @@
 - [sonar](./sonar/sonar.md) 代码质量检测工具
 - [zentao](./zentao/zentao.md) 禅道 项目管理工具
 - [php](./php-nginx/php.md) 快速部署php环境 
-- [svn](./svn/svn.md)
 - [elk](./elk/elk.md)
 #### 数据库
 - [mysql](./mysql/mysql.md) 包含单机 一主一从
 - [redis](./redis/redis.md) 包含单机 哨兵 及redis集群
 - [mongo](./mongo/mongo.md) 包含单机 副本集 分片集群
 - [psql](./psql/psql.md) 10版本以上镜像 老版本Navicat Premium可能不支持
-- [hive](./hive/hive.md)
 
 #### 队列
 - [rabbitmq](./rabbitmq/rabbitmq.md) 新增python调用测试示例
@@ -42,15 +40,12 @@
 - [samba](./samba/samba.md) windows 共享协议 
 ##### 监控
 - [zabbix](./zabbix/zabbix.md)
-- [promethus](./promethus/promethus.md) 只需要修改下配置文件即可使用promethus监控系统
+- [prometheus](./prometheus/prometheus.md) 只需要修改下配置文件即可使用prometheus监控系统
 ##### security安全审计类
 - [juice-shop](./juice-shop/juice-shop.md) 很有意思的安全闯关游戏 玩它!
 - [Nessus](./Nessus/Nessus.md)
 ##### 其他类
-- [k8s集群](./juice-shop/juice-shop.md)
 - [ocserv](./ocserv/ocserv.md)  ssl加密vpn
-- [coredns](./coredns/coredns.md)  coredns+etcd存储的DNS服务器
-- [jar-docker](./jar-docker/jar-docker.md)  jar包 DockerFile规范 
 
 
 
